@@ -327,31 +327,26 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        # print("making random move")
-        # for sentence in self.knowledge:
-        #     probability = sentence.count/len(sentence.cells)
-        #     for cell in sentence.cells:
-        #         if cell in Cell_stat.all_cell.keys():
-                
-        #             Cell_stat.all_cell[cell] += probability
-        #         else:
-        #              Cell_stat.all_cell[cell] = probability
-        # print(Cell_stat.all_cell.keys())
+        #Compute probability for all cells
+        for sentence in self.knowledge:
+            print (sentence)
+            single_probability = sentence.count/len(sentence.cells)
+            for cell in sentence.cells:
+                if cell not in Cell_stat.all_cell.keys():
+                    Cell_stat.all_cell[cell] = single_probability
+                elif cell in Cell_stat.all_cell.keys():
+                    Cell_stat.all_cell[cell] += single_probability
+        print(Cell_stat.all_cell)
 
-        # for sentence in self.knowledge:
-        #     if sentence.count == 1:
-        #         for cell in sentence.cells:
-        #             if cell not in self.mines.union(self.moves_made):
-        #                 return cell
-        #     elif sentence.count == 2:
-        #         for cell in sentence.cells:
-        #             if cell not in self.mines.union(self.moves_made):
-        #                 return cell
-
-        for i in range(self.height):
-            for j in range(self.width):
-                if (i,j) not in self.mines.union(self.moves_made):
-                    return(i,j)
+        if Cell_stat.all_cell:
+            min_key = min(Cell_stat.all_cell, key=Cell_stat.all_cell.get)
+            print(f"Min key = {min_key} \n min value = {Cell_stat.all_cell[min_key]} ")
+            return min_key
+        else:                           #If no probability exists, play random
+            for i in range(self.height):
+                for j in range(self.width):
+                    if (i,j) not in self.mines.union(self.moves_made):
+                        return(i,j)
 
 class Cell_stat():
 

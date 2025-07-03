@@ -25,7 +25,7 @@ mediumFont = pygame.font.Font(OPEN_SANS, 28)
 largeFont = pygame.font.Font(OPEN_SANS, 40)
 
 # Compute board size
-BOARD_PADDING = 20
+BOARD_PADDING = 40
 board_width = ((2 / 3) * width) - (BOARD_PADDING * 2)
 board_height = height - (BOARD_PADDING * 2)
 cell_size = int(min(board_width / WIDTH, board_height / HEIGHT))
@@ -100,6 +100,27 @@ while True:
 
     # Draw board
     cells = []
+
+    # Draw row numbers on the left
+    for i in range(HEIGHT):
+        text_surface = smallFont.render(str(i), True, (255, 255, 255))  # white text
+        text_rect = text_surface.get_rect()
+        text_rect.center = (
+            board_origin[0] - cell_size // 2,                     # left of the board
+            board_origin[1] + i * cell_size + cell_size // 2      # center of each row
+        )
+        screen.blit(text_surface, text_rect)
+    
+    # Draw column numbers on the top
+    for j in range(WIDTH):
+        text_surface = smallFont.render(str(j), True, (255, 255, 255))
+        text_rect = text_surface.get_rect()
+        text_rect.center = (
+            board_origin[0] + j * cell_size + cell_size // 2,     # center of each column
+            board_origin[1] - cell_size // 2                      # above the board
+        )
+        screen.blit(text_surface, text_rect)
+
     for i in range(HEIGHT):
         row = []
         for j in range(WIDTH):
@@ -133,7 +154,7 @@ while True:
     # AI Move button
     aiButton = pygame.Rect(
         (2 / 3) * width + BOARD_PADDING, (1 / 3) * height - 50,
-        (width / 3) - BOARD_PADDING * 2, 50
+        (width / 3) - BOARD_PADDING * 1.5, 50
     )
     buttonText = mediumFont.render("AI Move", True, BLACK)
     buttonRect = buttonText.get_rect()
@@ -155,7 +176,7 @@ while True:
     # Reset button
     resetButton = pygame.Rect(
         (2 / 3) * width + BOARD_PADDING, (1 / 3) * height + 20,
-        (width / 3) - BOARD_PADDING * 2, 50
+        (width / 3) - BOARD_PADDING * 1.5, 50
     )
     buttonText = mediumFont.render("Reset", True, BLACK)
     buttonRect = buttonText.get_rect()
